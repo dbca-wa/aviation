@@ -1,0 +1,23 @@
+<table class="display main-datatable">
+<thead>
+<tr>
+{% for header in table_fields %}<th>{{ header }}</th>{% endfor %}
+</tr>
+<tr>
+{% for header in table_fields %}
+{% if header in table_droplist %}
+    <td class="td_select"><input type="text" name="{{ header }}" value="" class="search_init" /></td>
+{% else %}
+    <td class="td_query"><input type="text" name="{{ header }}" value="" class="search_init input_query" /></td>
+{% endif %}
+{% endfor %}
+</tr>
+</thead>
+<tbody>
+{% for row in table_dataset %}
+<tr>
+{% for column in row %}<td>{{ column }}</td>{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>

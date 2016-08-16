@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="/media/uni-form.css" />
+<script type="text/javascript">
+
+$(document).ready(function(){ 
+    //add date picker
+    //$('input.daterange').daterangepicker({dateFormat: 'dd/mm/yy', earliestDate:Date.parse('-2years'), posX: 300, posY: 100}); 
+    $('input.daterange').daterangepicker({dateFormat: 'dd/mm/yy', posX: 300, posY: 100, earliestDate: '01/01/1990', latestDate: '12/31/2030'});
+    // make button look good
+    jQuery(".button").button({});
+    
+    // set event on all buttons
+    //$(".button_copy").click(function(event) {
+    $(".button").click(function(event) {
+        row_num = this.id;        
+        if  ($("#id_sort").val() == "D"){                       
+            row_num_changed = parseInt(row_num) + 1;
+            row_num_changed = row_num_changed.toString();
+        }       
+        else{
+            row_num_changed = parseInt(row_num) - 1;
+            row_num_changed = row_num_changed.toString();
+        }
+        
+        row_num_low = row_num - 1;      
+        
+        //console.log($("#id_dutytime_set-" + row_num_low + "-datetime_on_first").val());
+        //console.log($("#id_dutytime_set-" + row_num_low + "-datetime_off_first").val());
+        
+        $("#id_dutytime_set-" + row_num + "-datetime_on_first").val($("#id_dutytime_set-" + row_num_changed + "-datetime_on_first").val()); 
+        $("#id_dutytime_set-" + row_num + "-datetime_off_first").val($("#id_dutytime_set-" + row_num_changed + "-datetime_off_first").val()); 
+        
+       
+        
+    });
+    
+     
+});
+
+
+// dutytime_set-0-datetime_on_first
+// dutytime_set-0-datetime_off_first
+
+
+</script>
+
+<h2>Edit Duty Times / {{name}}</h2>
+
+<hr />
+<div>
+<form action="" method="post">
+{% csrf_token %}
+<table>
+{{drForm}}
+</table>
+<input type="submit" name="type" value="Go" class="submit submitButton">
+</form>
+</div>
+<hr />
+<form method="post" action="">
+{% csrf_token %}
+<table>
+{{ formset.management_form }}
+{% for form in formset.forms %}
+  {% if forloop.first %}
+  <thead><tr>
+    {% comment %}
+    <th>LOG ID</th>
+    {% endcomment %}
+    <th>Copy</th>
+    {% for field in form.visible_fields %}
+    <th>{{ field.label|capfirst }}</th>
+    {% endfor %}
+  </tr></thead>
+  {% endif %}
+  <tr class="{% cycle row1,row2 %}">
+  {% comment %}
+  <td>{{ log.id}}</td>
+  {% endcomment %}
+  <td>
+  <button type="button" class="button" id="{{forloop.counter0}}">Copy Previous Day</button> 
+  </td>
+  {% for field in form.visible_fields %}    
+    <td>
+    {# Include the hidden fields in the form #}
+    {% if forloop.first %}
+      {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+      {% endfor %}
+    {% endif %}
+      {{ field.errors.as_ul }}
+      {{ field }}
+    </td>
+  {% endfor %} 
+  </tr>
+{% endfor %}
+</table>
+<input type="submit" name="type" value="Save" class="submit submitButton"/>
+</form>
+
+
+{% endblock content%}

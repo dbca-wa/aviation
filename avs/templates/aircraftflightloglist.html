@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "multiselect.html" %}
+
+<script type="text/javascript">
+ $(document).ready(function(){
+    $('input.daterange').daterangepicker({dateFormat: 'dd/mm/yy', posX: 300, posY: 100, earliestDate: '01/01/1990', latestDate: '12/31/2030'});
+ });
+
+    
+(function($) {
+/*
+ * Function: fnGetColumnData
+ * Purpose:  Return an array of table values from a particular column.
+ * Returns:  array string: 1d data array 
+ * Inputs:   object:oSettings - dataTable settings object. This is always the last argument past to the function
+ *           int:iColumn - the id of the column to extract the data from
+ *           bool:bUnique - optional - if set to false duplicated values are not filtered out
+ *           bool:bFiltered - optional - if set to false all the table data is used (not only the filtered)
+ *           bool:bIgnoreEmpty - optional - if set to false empty values are not filtered from the result array
+ * Author:   Benedikt Forchhammer <b.forchhammer /AT\ mind2.de>
+ */
+$.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUnique, bFiltered, bIgnoreEmpty ) {
+	// check that we have a column id
+	if ( typeof iColumn == "undefined" ) return new Array();
+	
+	// by default we only wany unique data
+	if ( typeof bUnique == "undefined" ) bUnique = true;
+	
+	// by default we do want to only look at filtered data
+	if ( typeof bFiltered == "undefined" ) bFiltered = true;
+	
+	// by default we do not wany to include empty values
+	if ( typeof bIgnoreEmpty == "undefined" ) bIgnoreEmpty = true;
+	
+	// list of rows which we're going to loop through
+	var aiRows;
+	
+	// use only filtered rows
+	if (bFiltered == true) aiRows = oSettings.aiDisplay; 
+	// use all rows
+	else aiRows = oSettings.aiDisplayMaster; // all row numbers
+
+	// set up data array	
+	var asResultData = new Array();
+	
+	for (var i=0,c=aiRows.length; i<c; i++) {
+		iRow = aiRows[i];
+		var aData = this.fnGetData(iRow);
+		var sValue = aData[iColumn];
+		
+		// ignore empty values?
+		if (bIgnoreEmpty == true && sValue.length == 0) continue;
+
+		// ignore unique values?
+		else if (bUnique == true && jQuery.inArray(sValue, asResultData) > -1) continue;
+		
+		// else push the value onto the result data array
+		else asResultData.push(sValue);
+	}
+	
+	return asResultData;
+}}(jQuery));
+
+
+function fnCreateSelect( aData )
+{
+	var r='<select><option value=""></option>', i, iLen=aData.length;
+	for ( i=0 ; i<iLen ; i++ )
+	{
+		r += '<option value="'+aData[i]+'">'+aData[i]+'</option>';
+	}
+	return r+'</select>';
+}
+
+function calculate_date(date) {
+    var date = date.replace(" ", "");
+     
+    if (date.indexOf('.') > 0) {
+        /*date a, format dd.mn.(yyyy) ; (year is optional)*/
+        var eu_date = date.split('.');
+    } else {
+        /*date a, format dd/mn/(yyyy) ; (year is optional)*/
+        var eu_date = date.split('/');
+    }
+     
+    /*year (optional)*/
+    if (eu_date[2]) {
+        var year = eu_date[2];
+    } else {
+        var year = 0;
+    }
+     
+    /*month*/
+    var month = eu_date[1];
+    if (month.length == 1) {
+        month = 0+month;
+    }
+     
+    /*day*/
+    var day = eu_date[0];
+    if (day.length == 1) {
+        day = 0+day;
+    }
+     
+    return (year + month + day) * 1;
+}
+ 
+jQuery.fn.dataTableExt.oSort['eu_date-asc'] = function(a, b) {
+    x = calculate_date(a);
+    y = calculate_date(b);
+     
+    return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+};
+ 
+jQuery.fn.dataTableExt.oSort['eu_date-desc'] = function(a, b) {
+    x = calculate_date(a);
+    y = calculate_date(b);
+     
+    return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+};
+
+
+
+
+$(document).ready(function() {
+	/* Initialise the DataTable */
+   
+    
+    TableToolsInit['sSwfPath'] = "/media/DataTables-1.7.1/extras/TableTools/media/swf/ZeroClipboard.swf" 
+   
+   
+	var oTable = $('#t1').dataTable( {        
+            /*
+            "oTableTools" : {
+                "sSwfPath": "../../../include/swf/zeroClipboard.swf",
+                "aButtons": ["copy", "print"]
+            },
+            */
+            "sDom": 'T<"clear">lfrtip',
+            "sPaginationType": "full_numbers",
+            "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
+            "iDisplayLength": 50,
+            "bJQueryUI": true,        
+            "oLanguage": {
+                "sSearch": "Search all columns:"
+            },
+            "aaSorting": [[ 1, "desc" ]],
+            "aoColumns": [
+                null,
+                {"sType": "eu_date"},
+                null,
+                null,
+                null,
+                null,                
+                null,
+                null,
+                null
+            ],
+            /* Where first row  = 0 */
+            "fnFooterCallback": function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+                var iPageMarket = 0;
+                for ( var i=iStart ; i<iEnd ; i++ )
+                {
+                    iPageMarket += aaData[ aiDisplay[i] ][4]*1;
+                }                
+                /* Modify the footer row to match what we want */
+                iPageMarket = iPageMarket.toFixed(2);
+                var nCells = nRow.getElementsByTagName('th');                
+                nCells[1].innerHTML = parseFloat(iPageMarket);
+            }
+    } );
+	
+   
+    
+    $(".td_select").each( function ( i ) {
+        // Get the column index number     
+        var col = $(this).index()
+        
+        this.innerHTML = fnCreateSelect( oTable.fnGetColumnData(col) );		
+        
+        $('select', this).change( function () {
+			oTable.fnFilter( $(this).val(), col );
+		} );
+
+	} );
+
+    
+    $(".input_query").keyup( function () {
+		/* Filter on the column (the index) of this element */
+        // Get column index number
+        var col = $(this).parent().index();
+		oTable.fnFilter( this.value, col );
+	} );
+
+        
+   
+    
+} ); 
+ 
+</script>
+<h2>Aircraft Flight Log Report</h2>
+<hr />
+<div>
+<form action="" method="post">
+{% csrf_token %}
+<table>
+{{drForm}}
+</table>
+<input type="submit" name="go" value="Go" class="submit submitButton">
+</form>
+</div>
+
+<div>
+<table id=t1 class="display">
+<thead>
+ <tr>
+    <th>Aircraft Flight Log #</th>
+    <th>Date</th>
+    <th>WST Out</th>
+    <th>Aircraft</th>
+    <th>Sum of Datcon Time</th>
+    <th>Job Number</th>
+    <th>Pilot In Command</th>
+    <th>Pilot In Command Under Supervision</th>   
+    <th>Task</th>   
+</tr>
+<tr>
+    <td class="td_query"><input type="text" name="search_1" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_2" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_3" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_4" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_5" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_3" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_6" value="" class="search_init input_query" /></td>
+    <td class="td_query"><input type="text" name="search_7" value="" class="search_init input_query" /></td>    
+    <td class="td_query"><input type="text" name="search_8" value="" class="search_init input_query" /></td>
+</tr>
+</thead>
+{{table|safe}}
+
+<tfoot>
+<tr>
+<th style="text-align:right" colspan="4">Total:</th>
+<th></th>
+<th style="text-align:right" colspan="4"></th>   
+</tr>
+</tfoot>
+
+</table>
+</div>
+
+
+{% endblock content %}
+
+

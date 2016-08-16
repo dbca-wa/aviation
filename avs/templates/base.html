@@ -1,0 +1,24 @@
+{% extends "avs_layout.html" %}
+{% block extrastyle %}{% endblock %} 
+{% block extra_js %}{% endblock %}
+    
+{% block breadcrumbs %}{% endblock %}
+<!-- <body> -->
+{% block pagecontent %}   
+        
+    <div id="page" style="clear:left;">
+    
+    <div id="avs_nav">
+        {% include "aviation_navigation.html" %}
+    </div>
+    
+    <hr id="navbreak" />
+    
+    {% include "alert.html" %}
+    <div id="content">
+       {% block content %}{% endblock %}
+    </div>
+    </div>
+{% endblock %}      
+
+
