@@ -1,67 +1,48 @@
-#from django.conf.urls.defaults import * depracated
-from django.conf.urls import *
-from avs.views import *
-from avs.migrate import *
-from django.conf import settings
+from django.conf.urls import url
+from avs import views as avs_views
+from django.views.generic import TemplateView
 
-urlpatterns = patterns('',      
+
+urlpatterns = [
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
     # Pilots
-    url(r'^pilot/list$', pilotlist, name='pilotlist',),
-    url(r'^pilot/list-saved$', pilotlist, name='pilotlist_saved',  kwargs = {'state':'Saved','state_type':'OK'}),
-    url(r'^pilot/add/$', pilotadd, name='pilotadd'),    
-    url(r'^pilot/(?P<pk>\d+)/update$',PilotUpdate.as_view(), name='pilotupdate',),
+    url(r'^pilot/list$', avs_views.pilotlist, name='pilotlist',),
+    url(r'^pilot/list-saved$', avs_views.pilotlist, name='pilotlist_saved', kwargs = {'state':'Saved','state_type':'OK'}),
+    url(r'^pilot/add/$', avs_views.pilotadd, name='pilotadd'),
+    url(r'^pilot/(?P<pk>\d+)/update$', avs_views.PilotUpdate.as_view(), name='pilotupdate',),
     # Aircraft
-    url(r'^aircraft/list$', aircraftlist, name='aircraftlist',),
-    url(r'^aircraft/list-saved$', aircraftlist, name='aircraftlist_saved',  kwargs = {'state':'Saved','state_type':'OK'}),
-    url(r'^aircraft/add/$', aircraftadd, name='aircraftadd'),
-    url(r'^aircraft/(?P<pk>\d+)/update$',AircraftUpdate.as_view(), name='aircraftupdate',),
+    url(r'^aircraft/list$', avs_views.aircraftlist, name='aircraftlist',),
+    url(r'^aircraft/list-saved$', avs_views.aircraftlist, name='aircraftlist_saved',  kwargs = {'state':'Saved','state_type':'OK'}),
+    url(r'^aircraft/add/$', avs_views.aircraftadd, name='aircraftadd'),
+    url(r'^aircraft/(?P<pk>\d+)/update$', avs_views.AircraftUpdate.as_view(), name='aircraftupdate',),
     # Task
-    url(r'^task/list$', tasklist, name='tasklist'),
-    url(r'^task/list-saved$', tasklist, name='tasklist_saved',  kwargs = {'state':'Saved','state_type':'OK'}),
-    url(r'^task/add/$', taskadd, name='taskadd'),
-    url(r'^task/(?P<pk>\d+)/update$', TaskUpdate.as_view(), name='taskupdate',),
+    url(r'^task/list$', avs_views.tasklist, name='tasklist'),
+    url(r'^task/list-saved$', avs_views.tasklist, name='tasklist_saved', kwargs={'state':'Saved','state_type':'OK'}),
+    url(r'^task/add/$', avs_views.taskadd, name='taskadd'),
+    url(r'^task/(?P<pk>\d+)/update$', avs_views.TaskUpdate.as_view(), name='taskupdate',),
     # Aircraft Flight Log
-    url(r'^aircraftflightlog/list$', aircraftflightloglist, name='aircraftflightlogslist'),
-    url(r'^aircraftflightlog/listdetailed$', aircraftflightloglistdetailed, name='aircraftflightloglistdetailed'),
-    url(r'^aircraftflightlog/list-saved$', aircraftflightloglist, name='aircraftflightlogslist_saved',  kwargs = {'state':'Saved','state_type':'OK'}),
-    url(r'^aircraftflightlog/add/$', aircraftflightlogadd, name='aircraftflightlogadd'),
+    url(r'^aircraftflightlog/list$', avs_views.aircraftflightloglist, name='aircraftflightlogslist'),
+    url(r'^aircraftflightlog/listdetailed$', avs_views.aircraftflightloglistdetailed, name='aircraftflightloglistdetailed'),
+    url(r'^aircraftflightlog/list-saved$', avs_views.aircraftflightloglist, name='aircraftflightlogslist_saved',  kwargs = {'state':'Saved','state_type':'OK'}),
+    url(r'^aircraftflightlog/add/$', avs_views.aircraftflightlogadd, name='aircraftflightlogadd'),
     # Aircraft Flight Log Details
-    url(r'^aircraftflightlogdetails/(?P<id>\d+)/add/$', aircraftflightlogdetailsadd, name='aircraftflightlogdetailsadd'),
-    url(r'^aircraftflightlogdetails-saved/(?P<id>\d+)/add/$', aircraftflightlogdetailsadd, name='aircraftflightlog_saved', kwargs = {'state':'Saved','state_type':'OK'}),
-    # Duty Time    
-    url(r'^dutytime/add/$', dutytimeadd, name='dutytimeadd'),    
-    url(r'^dutytime/(?P<id>\d+)/add/$', dutytimeaddset, name='dutytimeaddset'),
-    url(r'^dutytime-saved/(?P<id>\d+)/add/$', dutytimeaddset, name='dutytimeaddset_saved', kwargs = {'state':'Saved','state_type':'OK'}),
-    url(r'^dutytime/(?P<id>\d+)/hours/$', dutytimehours, name='dutytimehours'),
-	# Migrate
-	url(r'^migrate$', migrate, name='migrate'),
-    # Summary Reports	
+    url(r'^aircraftflightlogdetails/(?P<id>\d+)/add/$', avs_views.aircraftflightlogdetailsadd, name='aircraftflightlogdetailsadd'),
+    url(r'^aircraftflightlogdetails-saved/(?P<id>\d+)/add/$', avs_views.aircraftflightlogdetailsadd, name='aircraftflightlog_saved', kwargs = {'state':'Saved','state_type':'OK'}),
+    # Duty Time
+    url(r'^dutytime/add/$', avs_views.dutytimeadd, name='dutytimeadd'),
+    url(r'^dutytime/(?P<id>\d+)/add/$', avs_views.dutytimeaddset, name='dutytimeaddset'),
+    url(r'^dutytime-saved/(?P<id>\d+)/add/$', avs_views.dutytimeaddset, name='dutytimeaddset_saved', kwargs = {'state':'Saved','state_type':'OK'}),
+    url(r'^dutytime/(?P<id>\d+)/hours/$', avs_views.dutytimehours, name='dutytimehours'),
+    # Summary Reports
     # Command
-    url(r'^report/commandpilotsummary$', commandpilotsummary, name='commandpilotsummary'),    
+    url(r'^report/commandpilotsummary$', avs_views.commandpilotsummary, name='commandpilotsummary'),
     # Training
-    url(r'^report/trainingpilotsummary$', trainingpilotsummary, name='trainingpilotsummary'),    
+    url(r'^report/trainingpilotsummary$', avs_views.trainingpilotsummary, name='trainingpilotsummary'),
     # Aircraft
-    url(r'^report/aircraftsummary$', aircraftsummary, name='aircraftsummary'),    
+    url(r'^report/aircraftsummary$', avs_views.aircraftsummary, name='aircraftsummary'),
     # Flight
-    url(r'^report/flightsummary$', flightsummary, name='flightsummary'),    
+    url(r'^report/flightsummary$', avs_views.flightsummary, name='flightsummary'),
     # Other
-    url(r'^report/timesummary$', timesummary, name='timesummary'),    
-    url(r'^report/firesummary$', firesummary, name='firesummary'),
-)
-
-#urlpatterns += patterns('django.views.generic.simple',
-urlpatterns += patterns('django.views.generic',  
-    # Index
-    #url(r'^index$', 'direct_to_template', {'template': 'index.html','extra_context':{'pagetitle':'Home'}}, name='index'), Depracated
-
-
-   url(r'^index$', ExtraContextTemplateView.as_view(template_name= 'index.html',extra_context={'pagetitle':'Home'}), name='index'),
-	
-)
-
-urlpatterns += patterns('django.views.static',
-  
-    # Media
-    #(r'^media/(?P<path>.*)$', 'serve', {'document_root': settings.MEDIA_ROOT}),
-)
-
+    url(r'^report/timesummary$', avs_views.timesummary, name='timesummary'),
+    url(r'^report/firesummary$', avs_views.firesummary, name='firesummary'),
+]

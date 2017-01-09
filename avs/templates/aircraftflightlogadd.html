@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% include forms.html %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <link rel="stylesheet" href="/media/uni-form.css" />
 <script src="/media/chosen/chosen/chosen.jquery.js" type="text/javascript"></script>
-<script type="text/javascript">   
+<script type="text/javascript">
     $(document).ready(function(){
-        jQuery("input.dateinput").datepicker({ dateFormat: 'dd/mm/yy', minDate: '01/01/1989', maxDate: '31/12/2100' });       
+        jQuery("input.dateinput").datepicker({ dateFormat: 'dd/mm/yy', minDate: '01/01/1989', maxDate: '31/12/2100' });
     });
 </script>
 <link type="text/css" href="/media/chosen/chosen/chosen.css" rel="stylesheet" />
@@ -17,20 +17,20 @@
 
 <form method="POST" action="" class="uniForm">
 {% csrf_token %}
-  <fieldset class="inlineLabels">            
-    {{ form|as_uni_form }}            
+  <fieldset class="inlineLabels">
+    {{ form|as_uni_form }}
     <div class = "form_block">
       <input type="submit" value="Save Changes" class="submit submitButton">
     </div>
-  </fieldset>                
+  </fieldset>
 </form>
 <div>
 
- 
+
 <script type="text/javascript">
-    $(".select").chosen(); 
+    $(".select").chosen();
     //$(".chzn-select-aircraft").chosen();
 </script>
- 
+
 
 {% endblock content%}

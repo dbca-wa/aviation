@@ -46,7 +46,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'reversion',
-    #'avs',
+    'crispy_forms',
+    'avs',
 )
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
