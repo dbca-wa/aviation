@@ -2543,13 +2543,13 @@ def dutytimeadd(request):
             table += '<a href="' + \
                 str(pilot.dutytime_set.all()[0].get_absolute_url()) + '">'
 
-            table += '<input type="image" src="/media/fatcow-hosting-icons-2000/32x32/page_white_edit.png" name="edit" width="24" height="24" alt="Edit">'
+            table += '<input type="image" src="/static/img/page_white_edit.png" name="edit" width="24" height="24" alt="Edit">'
 
             table += '</a>'
 
         except IndexError as e:
 
-            table += '<img type="image" src="/media/fatcow-hosting-icons-2000/32x32/cross.png" name="edit" width="24" height="24" alt="No Duty Time Records">'
+            table += '<img type="image" src="/static/img/cross.png" name="edit" width="24" height="24" alt="No Duty Time Records">'
 
         table += '</td>'
 
@@ -2559,13 +2559,13 @@ def dutytimeadd(request):
 
             table += '<a href="../' + str(pilot.id) + '/hours">'
 
-            table += '<input type="image" src="/media/fatcow-hosting-icons-2000/32x32/page_white_edit.png" name="edit" width="24" height="24" alt="Edit">'
+            table += '<input type="image" src="/static/img/page_white_edit.png" name="edit" width="24" height="24" alt="Edit">'
 
             table += '</a>'
 
         except IndexError as e:
 
-            table += '<img type="image" src="/media/fatcow-hosting-icons-2000/32x32/cross.png" name="edit" width="24" height="24" alt="No Duty Time Records">'
+            table += '<img type="image" src="/static/img/cross.png" name="edit" width="24" height="24" alt="No Duty Time Records">'
 
         table += '</td>'
 

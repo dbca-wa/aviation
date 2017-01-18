@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<link rel="stylesheet" href="/media/uni-form.css" />
 {% if title %}
     <h2>{{title}}</h2>
     <hr />
@@ -14,12 +13,7 @@
 </script>
 
 <form method="POST" action="" class="uniForm">
-{% csrf_token %}
-  <fieldset class="inlineLabels">
-    {{ form|as_uni_form }}
-    <div class = "form_block">
-      <input type="submit" value="Save Changes" class="submit submitButton">
-    </div>
-  </fieldset>
+    {% csrf_token %}
+    {% crispy form %}
 </form>
 {% endblock content %}

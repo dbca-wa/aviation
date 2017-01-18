@@ -86,11 +86,7 @@ function fnCreateSelect( aData )
 
 
 $(document).ready(function() {
-	/* Initialise the DataTable */
-
-
-    TableToolsInit['sSwfPath'] = "{{ STATIC_URL }}avs/DataTables-1.7.1/extras/TableTools/media/swf/ZeroClipboard.swf"
-
+    TableToolsInit['sSwfPath'] = "/static/datatables/ZeroClipboard.swf"
 
 	var oTable = $('#t1').dataTable( {
             "sDom": 'T<"clear">lrtip',
