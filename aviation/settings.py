@@ -81,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
+                'aviation.context_processors.template_context',
             ],
         },
     }
@@ -88,6 +89,8 @@ TEMPLATES = [
 LOGIN_URL = '/login/'
 APPLICATION_VERSION_NO = '1.0'
 SITE_TITLE = 'Aviation System'
+# This is required to add context variables to all templates:
+STATIC_CONTEXT_VARS = {}
 
 # Email settings
 ADMINS = ('asi@dpaw.wa.gov.au',)
@@ -161,15 +164,3 @@ LOGGING = {
         },
     }
 }
-
-'''
-# Add a context to all templates
-def global_template_context(request):
-    return {'sitetitle':"Aviation System",
-            'application_version_no':"15.10",
-            'application_custodian':"Fire Management Services",
-            'production_site': not DEBUG,
-            }
-
-TEMPLATE_CONTEXT_PROCESSORS += ("settings.global_template_context",)
-'''

@@ -4,11 +4,11 @@
 
 {% block layout %}
     <!-- Header -->
-    <div class="container site-header" id="site-header"{% if production_site %}{% else %} style="background-color:#E99719;"{% endif %}>
+    <div class="container site-header" id="site-header">
         <div class="row">
             <!-- Logo and site title -->
             <div class="eightcol" id="site-branding">
-                <a href="/"><h1 class="site-title" id="site-title">{{ sitetitle }}{% if production_site %}{% else %} ({% if hostenv %}{{ hostenv }}{% else %}non-production{% endif %}){% endif %}</h1></a>
+                <a href="/"><h1 class="site-title" id="site-title">{{ sitetitle }}</h1></a>
             </div>
             <!-- User tools for logging in/out -->
             <div class="fourcol last" id="site-user-tools">
@@ -66,7 +66,7 @@
         <div class="row">
             <div class="twelvecol last" style="padding:0px;margin:0px;">
                 <div class="footer_badge" style="height:60px; background-color:#005072;">
-                    <p style="padding-top:20px; color:#fff;">{% if application_version_no %}v {{ application_version_no }} {% endif %}Copyright 2015 Department of Parks and Wildlife</p>
+                    <p style="padding-top:20px; color:#fff;">{% if application_version_no %}v {{ application_version_no }} {% endif %}Copyright Department of Parks and Wildlife</p>
                     <style type="text/css">
                         a.badge {
                             position: fixed;

@@ -16,75 +16,43 @@
     <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
 
 	<!-- The 1600px Grid -->
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/1600.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'css/1600.css' %}" type="text/css" media="screen" />
 	<!--[if lte IE 9]>
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/ie.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'css/ie.css' %}" type="text/css" media="screen" />
 	<![endif]-->
 	<!-- Make minor type adjustments for 1024 monitors -->
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/smallerscreen.css" media="only screen and (max-width: 1023px)" />
-
+    <link rel="stylesheet" href="{% static 'css/smallerscreen.css' %}" media="only screen and (max-width: 1023px)" />
     <!-- Styles reset and basic style definitions -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/{% if style_css_overide %}{{ style_css_overide }}{% else %}style.css{% endif %}" type="text/css" />
-    <!-- jQuery UI styles -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.14.custom.css" /> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" />
     <!-- Tablesorter plugin styles -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/tablesorter-style.css" type="text/css" />
-
-    <link rel="stylesheet" href="/media/style.css">
-    <link href="/media/menu/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/media/menu/default.ultimate.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/tablesorter-style.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/dropdown.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/default.ultimate.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'datatables/demo_table_jui.css' %}" />
+    <link rel="stylesheet" href="{% static 'datatables/TableTools.css' %}" />
+    <link rel="stylesheet" href="{% static 'jqueryui/jquery-ui-1.8.4.custom.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ui.daterangepicker.css' %}" />
     <style type="text/css" title="currentStyle">
-            @import "/media/DataTables-1.7.1/media/css/demo_table_jui.css";
-            @import "/media/jquery-ui-1.8.4.custom/css/custom-theme/jquery-ui-1.8.4.custom.css";
-            @import "/media/DataTables-1.7.1/extras/TableTools/media/css/TableTools.css";
-            @import "/media/ui.daterangepicker.css";
-    </style>
-
-    <style type="text/css" title="currentStyle">
-    .dataTables_info {
-        color:#e99719;
-        }
+        .dataTables_info {color:#e99719}
     </style>
     <!-- Django template variable for any extra CSS to be inserted in every template -->
     {{ extrastyle|safe }}
-
     {% block extrastyle %}{% endblock %}
 
-     <!-- jQuery -->
-    <script type="text/javascript" src="/media/jquery-1.4.2.js"></script>
-    <!-- jQuery UI -->
-    <script type="text/javascript" src="/media/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
-    <!-- jQuery Datatables -->
-    <script type="text/javascript" language="javascript" src="/media/DataTables-1.7.1/media/js/jquery.dataTables.js"></script>
-    <!-- jQuery Datatables - TableTools -->
-    <script type="text/javascript" language="javascript" src="/media/DataTables-1.7.1/extras/TableTools/media/ZeroClipboard/ZeroClipboard.js"></script>
-    <script type="text/javascript" language="javascript" src="/media/DataTables-1.7.1/extras/TableTools/media/js/TableTools.js"></script>
-    <!-- jQuery Date Range -->
-    <script type="text/javascript" language="javascript" src="/media/daterangepicker.jQuery.js"></script>
-    <script type="text/javascript" language="javascript" src="/media/date.format.js"></script>
+    <script type="text/javascript" src="{% static 'jquery/jquery-1.4.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqueryui/jquery-ui-1.8.4.custom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'datatables/jquery.dataTables.js' %}"></script>
+    <script type="text/javascript" src="{% static 'datatables/ZeroClipboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'datatables/TableTools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery/daterangepicker.jQuery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/date.format.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             jQuery("input.dateinput").datepicker({ dateFormat: 'dd/mm/yy', minDate: '01/01/1989', maxDate: '31/12/2022' });
             jQuery("input.submitButton").button({});
-            //jQuery(".button").button({});
-            //jQuery('input.daterange').daterangepicker({dateFormat: 'dd/mm/yy'});
-
         });
     </script>
-
-
-
-    <!-- Modernizr javascript library, which enables HTML5 elements & feature detects -->
-    <!--
-    <script src="{{ STATIC_URL }}js/modernizr-2.0.6.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.14.custom.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.daterangepicker.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-timepicker-addon.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
-    -->
     {% block extra_js %}{% endblock %}
-
 </head>
 <body>
 {% block layout %}{% endblock %}
