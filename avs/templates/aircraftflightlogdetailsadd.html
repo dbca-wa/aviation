@@ -1,25 +1,21 @@
 {% extends "base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<link rel="stylesheet" href="/media/uni-form.css" />
-<script src="/media/chosen/chosen/chosen.jquery.js" type="text/javascript"></script>
-<link type="text/css" href="/media/chosen/chosen/chosen.css" rel="stylesheet" />
+<script src="/static/chosen/chosen.jquery.js" type="text/javascript"></script>
+<link type="text/css" href="/static/chosen/chosen.css" rel="stylesheet" />
 
 <h2>Aircraft Flight Log</h2>
 <hr />
-<form action="" method="post" class="uniForm">
-{% csrf_token %}
-<div>  
-    {{ form|as_uni_form }}
-</div>
-<script type="text/javascript">
-    //$(".select").chosen(); 
-    
-    $(".chzn-select-aircraft").chosen();
+<form action="" method="post">
+    {% csrf_token %}
+    {% crispy form %}
 
-    
+<script type="text/javascript">
+    //$(".select").chosen();
+    $(".chzn-select-aircraft").chosen();
 </script>
+
 <h2>Details</h2>
 <table>
 {{ formset.management_form }}
@@ -38,7 +34,7 @@
   {% comment %}
   <td>{{ log.id}}</td>
   {% endcomment %}
-  {% for field in form.visible_fields %}    
+  {% for field in form.visible_fields %}
     <td>
     {# Include the hidden fields in the form #}
     {% if forloop.first %}
@@ -52,21 +48,17 @@
   {% endfor %}
   </tr>
 {% endfor %}
-
 </table>
 
-<input type="submit" class="submit submitButton" value="Save Changes" />
 </form>
 
 <script type="text/javascript">
-    $(".select").chosen(); 
-    
+    $(".select").chosen();
     //$(".chzn-select-aircraft").chosen({allow_single_deselect:false});
-    
     $(".chzn-select-task").chosen({allow_single_deselect:true});
     $(".chzn-select-command").chosen({allow_single_deselect:true});
     $(".chzn-select-super").chosen({allow_single_deselect:true});
-    
+
 </script>
 
 {% endblock content%}

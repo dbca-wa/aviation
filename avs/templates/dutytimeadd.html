@@ -1,17 +1,16 @@
 {% extends "base.html" %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<link rel="stylesheet" href="/media/uni-form.css" />
 <!--
-<script type="text/javascript">   
+<script type="text/javascript">
     $(document).ready(function(){
-        jQuery("input.dateinput").datepicker({ dateFormat: 'dd/mm/yy', minDate: '28/03/1986', maxDate: '31/12/2100' });        
+        jQuery("input.dateinput").datepicker({ dateFormat: 'dd/mm/yy', minDate: '28/03/1986', maxDate: '31/12/2100' });
     });
 </script>
 -->
 <script type="text/javascript">
-    
+
 function fnCreateSelect( aData )
 {
     var r='<select><option value=""></option>', i, iLen=aData.length;
@@ -23,10 +22,10 @@ function fnCreateSelect( aData )
 }
 
 function calculate_date(date) {
-    var date = date.replace(" ", "");   
-    
-    
-     
+    var date = date.replace(" ", "");
+
+
+
     if (date.indexOf('.') > 0) {
         /*date a, format dd.mn.(yyyy) ; (year is optional)*/
         var eu_date = date.split('.');
@@ -34,102 +33,102 @@ function calculate_date(date) {
         /*date a, format dd/mn/(yyyy) ; (year is optional)*/
         var eu_date = date.split('/');
     }
-     
+
     /*year (optional)*/
     if (eu_date[2]) {
         var year = eu_date[2];
     } else {
         var year = 0;
     }
-    
+
     try
     {
          /*month*/
         var month = eu_date[1];
         if (month.length == 1) {
             month = 0+month;
-        }    
+        }
     }
     catch(err)
     {
         month = 00;
-    } 
-   
-     
+    }
+
+
     /*day*/
     var day = eu_date[0];
     if (day.length == 1) {
         day = 0+day;
     }
-     
+
     return (year + month + day) * 1;
 }
- 
+
 jQuery.fn.dataTableExt.oSort['eu_date-asc'] = function(a, b) {
     x = calculate_date(a);
     y = calculate_date(b);
-     
+
     return ((x < y) ? -1 : ((x > y) ?  1 : 0));
 };
- 
+
 jQuery.fn.dataTableExt.oSort['eu_date-desc'] = function(a, b) {
     x = calculate_date(a);
     y = calculate_date(b);
-     
+
     return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
 };
-   
-    var dateValidation = function() {        
+
+    var dateValidation = function() {
         // if date_from set to nothing, remove min date from date_to
         if ($("input#id_date_from").val() == ''){
             $("input.dateto").datepicker("option", "minDate", '');
         }
         // if date_from has value, set min date for date_to equal to date_from
-        else{            
+        else{
             minDate = $("input#id_date_from").val();
-            $("input.dateto").datepicker("option", "minDate", minDate);            
-        }       
-       
+            $("input.dateto").datepicker("option", "minDate", minDate);
+        }
+
         // If date_to changed to nothing, remove max date from date_from
         if ($("input#id_date_to").val() == ''){
-            $("input.datefrom").datepicker("option", "maxDate", '');            
+            $("input.datefrom").datepicker("option", "maxDate", '');
         }
         else{
             // if date_to has value, set max date for date_from equal to date_to
             maxDate = $("input#id_date_to").val();
-            $("input.datefrom").datepicker("option", "maxDate",  maxDate);            
-        }        
+            $("input.datefrom").datepicker("option", "maxDate",  maxDate);
+        }
     }
-    
-    
-    
+
+
+
 
 $(document).ready(function() {
     //Create Unique Date Pickers
     $("input.dateto").datepicker({ dateFormat: 'dd/mm/yy', minDate: '', maxDate: '' });
     $("input.datefrom").datepicker({ dateFormat: 'dd/mm/yy', minDate: '', maxDate: '' });
-    
-    
+
+
     // If Date_From changed Do Stuff
-    $('#id_date_from').change(function() {         
-        dateValidation();                
+    $('#id_date_from').change(function() {
+        dateValidation();
     });
-    
-    // If Date_To changes do stuff    
-    $('#id_date_to').change(function() {        
-        dateValidation();               
+
+    // If Date_To changes do stuff
+    $('#id_date_to').change(function() {
+        dateValidation();
     });
-    
-   
+
+
     // If radio button changed / selected, do stuff
-    $("input[name='rdio']").change(function(){       
+    $("input[name='rdio']").change(function(){
         pilot_id = $("input[name='rdio']:checked").val();
         pilot_date = $("#date_" + pilot_id).html();
-        
+
         if (pilot_date == '') {
-            //take disabled off            
+            //take disabled off
             $("input#id_date_from").val('');
-            $('#id_date_from').removeAttr("disabled"); 
+            $('#id_date_from').removeAttr("disabled");
         }
         else {
             // Disable Date From picker
@@ -144,63 +143,63 @@ $(document).ready(function() {
             var pilot_date_alter = new Date(t);
             console.log(pilot_date_alter);
             pilot_date_alter.setDate(pilot_date_alter.getDate()+1);
-            console.log(pilot_date_alter);           
+            console.log(pilot_date_alter);
             pilot_date = dateFormat(pilot_date_alter, "ausDate");
             console.log(pilot_date);
-            $("input#id_date_from").val(pilot_date);            
+            $("input#id_date_from").val(pilot_date);
         }
         //populate hidden pilot id in form
         $('#hid_pilot_id').val(pilot_id);
-        
+
         dateValidation();
-      
+
     });
-    
-    var oTable = $('#t1').dataTable( {        
+
+    var oTable = $('#t1').dataTable( {
         "sPaginationType": "full_numbers",
 		"aLengthMenu": [[25, 50, 100, -1], ["25", "50", "100","All"]],
         "iDisplayLength": 50,
-        "bJQueryUI": true,        
+        "bJQueryUI": true,
         "oLanguage": {
 			"sSearch": "Search all columns:"
 		},
         "aoColumns": [
-			null,            
+			null,
 			null,
 			null,
             null,
             null,
 			{"sType": "eu_date"}
-		]                
+		]
 	} );
-    
-} ); 
+
+} );
 
     var beforeSubmit = function() {
-        
-        
+
+
         // Pilot must be selected
         /*
-        if ($("input[name='rdio']:checked").length == 0) { 
+        if ($("input[name='rdio']:checked").length == 0) {
             manualshow("Please select Pilot");
-            return false; 
-        }       
+            return false;
+        }
         */
         // Dates must be selected
         /*
-        if ( !$('#id_date_from')[0].value || !$('#id_date_to')[0].value ) { 
+        if ( !$('#id_date_from')[0].value || !$('#id_date_to')[0].value ) {
             manualshow("Please populate both date fields");
             return false;
         }
         */
        // Remove disabled on date
-        $('#id_date_from').removeAttr("disabled");        
+        $('#id_date_from').removeAttr("disabled");
     }
-    
-    
-    
-    
- 
+
+
+
+
+
 </script>
 
 <h2>Duty Times</h2>

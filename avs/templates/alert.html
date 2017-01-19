@@ -1,42 +1,27 @@
 <script type="text/javascript">
-$(document).ready(function() {
-    //options = {};
-    //options = {background-color: #FF0000};
-    if ($('#state').is(":empty") == false){
-    
-        $('#message').show('highlight', 5000);
-    }
-    //else $('#message').hide('highlight', 1);
-    
-    //hover states on the static widgets
+    $(document).ready(function() {
+        if ($('#state').is(":empty") == false){
+            $('#message').show('highlight', 5000);
+        }
+        //hover states on the static widgets
+        $('#dialog_link, #cross').hover(
+            function() { $(this).addClass('ui-state-hover'); },
+            function() { $(this).removeClass('ui-state-hover'); }
+        );
+        $('#dialog_link, #tick').hover(
+            function() { $(this).addClass('ui-state-hover'); },
+            function() { $(this).removeClass('ui-state-hover'); }
+        );
+        if ($('#state_type').html() == "Warning"){
+            hideshow($('#cross')[0]);
+            hideshow($('#warning')[0]);
+        }
+        else if ($('#state_type').html() == "OK"){
+            hideshow($('#tick')[0]);
+        }
+    });
 
-    $('#dialog_link, #cross').hover(
-
-        function() { $(this).addClass('ui-state-hover'); }, 
-
-        function() { $(this).removeClass('ui-state-hover'); }
-
-    );
-    $('#dialog_link, #tick').hover(
-
-        function() { $(this).addClass('ui-state-hover'); }, 
-
-        function() { $(this).removeClass('ui-state-hover'); }
-
-    );    
- 
-    if ($('#state_type').html() == "Warning"){
-        hideshow($('#cross')[0]);
-        hideshow($('#warning')[0]);         
-    }
-    else if ($('#state_type').html() == "OK"){
-        hideshow($('#tick')[0]);    
-    }
-    
-    
-    
-});   
-    function hideshow(which){
+    function hideshow(which) {
         if (!document.getElementById)
             return
         if (which.style.display == "") {
@@ -45,59 +30,44 @@ $(document).ready(function() {
         else if (which.style.display == "none") {
             which.style.display = "";
         }
-    }
-    
-    function show(which){
+    };
+
+    function show(which) {
         if (!document.getElementById)
             return
         which.style.display = "";
-        
-    }
-    
-    function manualshow(state){
-        $('#state')[0].innerHTML = state       
+    };
+
+    function manualshow(state) {
+        $('#state')[0].innerHTML = state
         show($('#cross')[0]);
         show($('#warning')[0]);
         show($('#message')[0]);
-        $('#message').show('highlight', 5000);        
-    }
-    
-
-
+        $('#message').show('highlight', 5000);
+    };
 </script>
+
 <style type="text/css">
 			/*demo page css*/
-
 			body{ font: 70% "Trebuchet MS", sans-serif; margin: 50px;}
-
 			.demoHeaders { margin-top: 2em; }
-
 			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
-
 			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
-
 			ul#alert {margin: 0; padding: 0;}
-
 			ul#alert li {margin: 2px; position: relative; padding: 4px 0; float: left;  list-style: none;}
-            
             ul#tick li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
-
             ul#cross li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
-            
 			ul#alert span.ui-icon {float: left; margin: 0 4px;}
 
 </style>
 <div id="state_type" style="display: none">{{state_type}}</div>
 <div id="message" class="ui-state-error ui-corner-all ui-widget" style="display: none">
-  
-   
-<ul id="alert" class="ui-widget ui-helper-clearfix">		
+    <ul id="alert" class="ui-widget ui-helper-clearfix">
 		<li id="cross" class="ui-state-default ui-corner-all" title=".ui-icon-closethick" style="display: none">
             <span  class="ui-icon ui-icon-closethick" onclick="javascript:hideshow(document.getElementById('message'))"></span>
         </li>
         <li id="tick" class="ui-state-default ui-corner-all" title=".ui-icon-check" style="display: none"><span  class="ui-icon ui-icon-check" onclick="javascript:hideshow(document.getElementById('message'))"></span></li>
         <li id="warning" style="display: none"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span></li>
 		<li><div id="state">{{state}}</div></li>
-		</ul>    
-    
+    </ul>
 </div>

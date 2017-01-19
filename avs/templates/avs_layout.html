@@ -4,17 +4,17 @@
 
 {% block layout %}
     <!-- Header -->
-    <div class="container site-header" id="site-header"{% if production_site %}{% else %} style="background-color:#E99719;"{% endif %}>
+    <div class="container site-header" id="site-header">
         <div class="row">
             <!-- Logo and site title -->
             <div class="eightcol" id="site-branding">
-                <a href="/"><h1 class="site-title" id="site-title">{{ sitetitle }}{% if production_site %}{% else %} ({% if hostenv %}{{ hostenv }}{% else %}non-production{% endif %}){% endif %}</h1></a>
+                <a href="/"><h1 class="site-title" id="site-title">{{ sitetitle }}</h1></a>
             </div>
             <!-- User tools for logging in/out -->
             <div class="fourcol last" id="site-user-tools">
             {% if request.user.is_authenticated %}
-                Welcome <strong>{% firstof request.user.first_name request.user.username %}</strong> | 
-                <a href="{% url 'help_page' %}" title="Help">Help</a> | 
+                Welcome <strong>{% firstof request.user.first_name request.user.username %}</strong> |
+                <a href="{% url 'help_page' %}" title="Help">Help</a> |
                 {% if request.user.is_staff %}{% if request.user.is_superuser %}<a href="{% url 'admin:index' %}">Admin site</a> | {% endif %}{% endif %}
                 <a href="{% url 'logout' %}">Log out</a>
             {% else %}
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Breadcrumbs -->
-    
+
     <div class="container breadcrumbs" id="breadcrumbs">
         <div class="row">
             <div class="twelvecol last">
@@ -65,7 +65,28 @@
     <div class="container site-footer" id="site-footer">
         <div class="row">
             <div class="twelvecol last" style="padding:0px;margin:0px;">
-                {% include "dec_base/badge_float.html" %}
+                <div class="footer_badge" style="height:60px; background-color:#005072;">
+                    <p style="padding-top:20px; color:#fff;">{% if application_version_no %}v {{ application_version_no }} {% endif %}Copyright Department of Parks and Wildlife</p>
+                    <style type="text/css">
+                        a.badge {
+                            position: fixed;
+                            display: block;
+                            height: 60px;
+                            width: 246px;
+                            bottom: 0px;
+                            right: 0px;
+                            text-indent: -9999em;
+                            background: url({{ STATIC_URL }}img/dec_badge.png) top left no-repeat;
+                            border-radius: 3px;
+                            -moz-border-radius: 3px;
+                            -webkit-border-radius: 3px;
+                            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+                            -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+                            -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+                        }
+                    </style>
+                    <a href="http://www.dpaw.wa.gov.au/" class="badge">Department of Parks and Wildlife</a>
+                </div>
             </div>
         </div>
     </div>

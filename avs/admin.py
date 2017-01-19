@@ -1,40 +1,45 @@
-from django.contrib import admin
-from avs.models import *
+from django.contrib.admin import register, ModelAdmin
+from avs.models import (
+    Task, Aircraft, Pilot, AircraftFlightLog, AircraftFlightLogDetail, DutyTime)
 
-class AVSBaseLookupModelAdmin(admin.ModelAdmin):
+
+@register(Task)
+class TaskAdmin(ModelAdmin):
     list_display = ('id', 'name', 'modified', 'modifier')
     date_hierarchy = 'created'
     search_fields = ('id', 'name',)
-    
-admin.site.register(Task, AVSBaseLookupModelAdmin)
-admin.site.register(Aircraft, AVSBaseLookupModelAdmin)
 
-class PilotAdmin(admin.ModelAdmin):
+
+@register(Aircraft)
+class AircraftAdmin(ModelAdmin):
+    list_display = ('id', 'name', 'modified', 'modifier')
+    date_hierarchy = 'created'
+    search_fields = ('id', 'name',)
+
+
+@register(Pilot)
+class PilotAdmin(ModelAdmin):
     list_display = ('id', 'first_name', 'last_name', 'modified', 'modifier')
     date_hierarchy = 'created'
-    search_fields = ('id','first_name','last_name',)
-    
-admin.site.register(Pilot, PilotAdmin)
+    search_fields = ('id', 'first_name', 'last_name',)
 
-class AircraftFlightLogAdmin(admin.ModelAdmin):
+
+@register(AircraftFlightLog)
+class AircraftFlightLogAdmin(ModelAdmin):
     list_display = ('id', 'flight_log_number', 'modified', 'modifier')
     date_hierarchy = 'created'
     search_fields = ('id', 'flight_log_number',)
-    
-admin.site.register(AircraftFlightLog, AircraftFlightLogAdmin)
 
-class AircraftFlightLogDetailAdmin(admin.ModelAdmin):
+
+@register(AircraftFlightLogDetail)
+class AircraftFlightLogDetailAdmin(ModelAdmin):
     list_display = ('id', 'modified', 'modifier')
     date_hierarchy = 'created'
     search_fields = ('id',)
-    
-admin.site.register(AircraftFlightLogDetail, AircraftFlightLogDetailAdmin)
 
-class DutyTimeAdmin(admin.ModelAdmin):
+
+@register(DutyTime)
+class DutyTimeAdmin(ModelAdmin):
     list_display = ('id', 'modified', 'modifier')
     date_hierarchy = 'created'
     search_fields = ('id',)
-    
-admin.site.register(DutyTime, DutyTimeAdmin)
-
-
